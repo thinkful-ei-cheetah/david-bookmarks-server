@@ -9,7 +9,7 @@ const logger = winston.createLogger({
   transports: [
     new winston.transports.File({ filename: 'info.log' })
   ]
-})
+});
 
 if (!['production', 'test'].includes(NODE_ENV)) {
   logger.add(new winston.transports.Console({

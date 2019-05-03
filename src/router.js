@@ -4,14 +4,14 @@ const express = require('express');
 
 const bookmarkRouter = express.Router();
 const bodyParser = express.json();
-const store = require('/store');
-const logger = require('/logger');
+const store = require('./store');
+const logger = require('./logger');
 const { isWebUri } = require('valid-url');
 const uuid = require('uuid/v4');
 
 
 bookmarkRouter
-  .route('/bookmark')
+  .route('/')
   .get((req, res) => {
     res.json(store.bookmarks);
   })
@@ -46,14 +46,14 @@ bookmarkRouter
   });
 
 bookmarkRouter
-  .route('/bookmark/:id')
+  .route('/:bookmarkId')
   .get((req, res) => {
-    const { bookmark_id } = req.params;
+    const { bookmarkId } = req.params;
 
-    const bookmark = store.bookmarks.find(c => c.id === bookmark_id);
+    const bookmark = store.bookmarks.find(c => c.id === bookmarkId);
 
     if (!bookmark) {
-      logger.error(`Bookmark with id ${bookmark_id} does not exist!`);
+      logger.error(`Bookmark with id ${bookmarkId} does not exist!`);
       return res
         .status(404)
         .send('Bookmark Not Found');
@@ -64,7 +64,7 @@ bookmarkRouter
   .delete((req, res) => {
     const { bookmark_id } = req.params;
 
-    const bookmarkIndex = store.bookmarks.findIndex(b => b.id === bookmark_id)
+    const bookmarkIndex = store.bookmarks.findIndex(b => b.id === bookmark_id);
 
     if (bookmarkIndex === -1) {
       logger.error(`Bookmark with id ${bookmark_id} not found.`);
